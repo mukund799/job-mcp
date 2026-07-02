@@ -27,6 +27,8 @@ def get_job_details_from_linkedin_uri(linkedin_uri: str):
         "description": response.text,
     }
 
+# 🌟 KEY ADDITION: Yeh line uvicorn ko asli ASGI application degi
+asgi_app = mcp.http_app(transport="streamable-http", stateless_http=True)
 
 def main():
     mcp.run(transport="streamable-http")
