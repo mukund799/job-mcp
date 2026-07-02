@@ -2,6 +2,8 @@ import os
 
 import requests
 from mcp.server.fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
@@ -9,6 +11,10 @@ TIMEOUT = int(os.getenv("TIMEOUT", "30"))
 
 # initialize FastMCP
 mcp = FastMCP("job_mcp", host=HOST, port=PORT, stateless_http=True)
+
+@mcp.custom_route("/", methods=["GET"])
+async def health_check(request: Request):
+    return JSONResponse({"status": "ok", "service": "job-mcp"})
 
 # Export the ASGI app for Render/Uvicorn
 asgi_app = mcp.streamable_http_app()
