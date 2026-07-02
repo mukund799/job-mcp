@@ -8,7 +8,10 @@ PORT = int(os.getenv("PORT", "8000"))
 TIMEOUT = int(os.getenv("TIMEOUT", "30"))
 
 # initialize FastMCP
-mcp = FastMCP("job_mcp", host=HOST, port=PORT)
+mcp = FastMCP("job_mcp", host=HOST, port=PORT, stateless_http=True)
+
+# Export the ASGI app for Render/Uvicorn
+asgi_app = mcp.streamable_http_app()
 
 @mcp.tool()
 def get_job_details_from_linkedin_uri(linkedin_uri: str):
@@ -26,9 +29,6 @@ def get_job_details_from_linkedin_uri(linkedin_uri: str):
         "linkedin_uri": linkedin_uri,
         "description": response.text,
     }
-
-# 🌟 KEY ADDITION: Yeh line uvicorn ko asli ASGI application degi
-asgi_app = mcp.http_app(transport="streamable-http", stateless_http=True)
 
 def main():
     mcp.run(transport="streamable-http")
