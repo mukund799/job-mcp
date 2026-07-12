@@ -6,6 +6,7 @@ from server import mcp
 # Import all tools
 import tools.linkedin
 import tools.naukri
+import tools.shared
 
 @mcp.custom_route("/", methods=["GET"])
 async def health_check(request: Request):

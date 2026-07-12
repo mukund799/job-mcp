@@ -1,5 +1,6 @@
 import os
 from mcp.server.fastmcp import FastMCP
+from mcp import types
 
 from shared.config import Config
 
